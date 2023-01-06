@@ -3,26 +3,26 @@ package com.example.recipes.model;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 @EqualsAndHashCode
 @ToString
 public class Recipe {
+    private final Set<Ingredient> ingredient;
     private String recipeName;
     private int timeForPreparing;
 
-    private Ingredient ingredient;
     private List<String> cookingSteps = new LinkedList<>();
 
-    private int id = 0;
+    private int id;
+    private static int counter;
 
-    public Recipe(String recipeName, int timeForPreparing, Ingredient ingredient, List<String>cookingSteps, int id) {
+    public Recipe(String recipeName, int timeForPreparing, Set<Ingredient> ingredients, List<String>cookingSteps) {
         this.recipeName = recipeName;
         setTimeForPreparing(timeForPreparing);
-        this.ingredient = ingredient;
+        this.ingredient = ingredients;
         this.cookingSteps.add(String.valueOf(cookingSteps));
-        this.id = id;
+        this.id = counter++;
     }
 
     public int getId() {
@@ -49,12 +49,8 @@ public class Recipe {
         }
     }
 
-    public Ingredient getIngredient() {
+    public Set<Ingredient> getIngredient() {
         return ingredient;
-    }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
     }
 
     public List<String> getCookingSteps() {
@@ -64,6 +60,4 @@ public class Recipe {
     public void setCookingSteps(List<String> cookingSteps) {
         this.cookingSteps = cookingSteps;
     }
-
-
 }

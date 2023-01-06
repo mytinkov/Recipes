@@ -3,30 +3,28 @@ package com.example.recipes.model;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @EqualsAndHashCode
 @ToString
 public class Ingredient {
-    private String INGREDIENT_NAME;
+    private String ingredientName;
     private int quantityOfIngredients;
     private String unit;
-    private int id = 0;
+    private int id;
+    private static int counter;
 
-    public Ingredient(String INGREDIENT_NAME, int quantityOfIngredients, String unit, int id) {
-        this.INGREDIENT_NAME = INGREDIENT_NAME;
+    public Ingredient(String INGREDIENT_NAME, int quantityOfIngredients, String unit) {
+        this.ingredientName = INGREDIENT_NAME;
         setQuantityOfIngredients(quantityOfIngredients);
         this.unit = unit;
-        this.id = id;
+        this.id = counter++;
     }
 
-    public String getINGREDIENT_NAME() {
-        return INGREDIENT_NAME;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setINGREDIENT_NAME(String INGREDIENT_NAME) {
-        this.INGREDIENT_NAME = INGREDIENT_NAME;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
     public int getQuantityOfIngredients() {
