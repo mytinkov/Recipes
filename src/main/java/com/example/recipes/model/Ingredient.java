@@ -12,8 +12,8 @@ public class Ingredient {
     private int id;
     private static int counter;
 
-    public Ingredient(String INGREDIENT_NAME, int quantityOfIngredients, String unit) {
-        this.ingredientName = INGREDIENT_NAME;
+    public Ingredient(String ingredientName, int quantityOfIngredients, String unit) {
+        this.ingredientName = ingredientName;
         setQuantityOfIngredients(quantityOfIngredients);
         this.unit = unit;
         this.id = counter++;

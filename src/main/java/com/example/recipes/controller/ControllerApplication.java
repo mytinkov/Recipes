@@ -13,11 +13,11 @@ public class ControllerApplication {
         return "Привет, это приложение с рецептами!";
     }
 
-    @GetMapping("/info")
+    /*@GetMapping("/info")
     public String info(@RequestParam String name, String nameProject, String date, String describe) {
         return "Имя ученика: " + name +
                 ". Название проекта: " + nameProject +
                 ". Дата создания проекта: " + date +
                 ". Описание проекта: " + describe + ".";
-    }
+    }*/
 }

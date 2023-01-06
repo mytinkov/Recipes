@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Service
 public class IngredientService {
-    private Map<Integer, Ingredient> ingredients = new HashMap<>();
+    private final Map<Integer, Ingredient> ingredients = new HashMap<>();
 
     public Ingredient addIngredient(Ingredient ingredient) {
         if (ingredients.containsKey(ingredient.getId())) {
@@ -17,6 +17,25 @@ public class IngredientService {
             ingredients.put(ingredient.getId(), ingredient);
         }
         return ingredient;
+    }
+
+    public Ingredient updateIngredient(int id, Ingredient ingredient) {
+        Ingredient serviceIngredient = ingredients.get(id);
+        if (serviceIngredient == null) {
+            throw new RuntimeException("No such ingredient");
+        }
+        serviceIngredient.setIngredientName(ingredient.getIngredientName());
+        serviceIngredient.setQuantityOfIngredients(ingredient.getQuantityOfIngredients());
+        serviceIngredient.setUnit(ingredient.getUnit());
+        return serviceIngredient;
+    }
+
+    public Ingredient deleteIngredient(int id) {
+        if (ingredients.containsKey(id)) {
+            return ingredients.remove(id);
+        } else {
+            throw new RuntimeException("No such ingredient");
+        }
     }
 
     public Ingredient getIngredient(int id) {

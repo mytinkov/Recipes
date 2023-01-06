@@ -30,4 +30,14 @@ public class RecipeController {
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return this.recipeService.addRecipe(recipe);
     }
+
+    @PutMapping("/{id}")
+    public Recipe updateRecipe(@PathVariable("id") int id, @RequestBody Recipe recipe) {
+        return this.recipeService.updateRecipe(id, recipe);
+    }
+
+    @DeleteMapping("/{id}")
+    public Recipe deleteRecipe(@PathVariable("id") int id) {
+        return this.recipeService.deleteRecipe(id);
+    }
 }

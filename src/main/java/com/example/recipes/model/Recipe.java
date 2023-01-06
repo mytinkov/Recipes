@@ -8,19 +8,18 @@ import java.util.*;
 @EqualsAndHashCode
 @ToString
 public class Recipe {
-    private final Set<Ingredient> ingredient;
     private String recipeName;
     private int timeForPreparing;
-
+    private final Set<Ingredient> ingredients;
     private List<String> cookingSteps = new LinkedList<>();
-
     private int id;
     private static int counter;
+
 
     public Recipe(String recipeName, int timeForPreparing, Set<Ingredient> ingredients, List<String>cookingSteps) {
         this.recipeName = recipeName;
         setTimeForPreparing(timeForPreparing);
-        this.ingredient = ingredients;
+        this.ingredients = ingredients;
         this.cookingSteps.add(String.valueOf(cookingSteps));
         this.id = counter++;
     }
@@ -50,8 +49,10 @@ public class Recipe {
     }
 
     public Set<Ingredient> getIngredient() {
-        return ingredient;
+        return ingredients;
     }
+
+
 
     public List<String> getCookingSteps() {
         return cookingSteps;

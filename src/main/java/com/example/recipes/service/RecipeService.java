@@ -18,6 +18,10 @@ public class RecipeService {
         }
     }
 
+    public Collection<Recipe> getAllRecipes() {
+        return recipes.values();
+    }
+
     public Recipe addRecipe(Recipe recipe) {
         if (recipes.containsKey(recipe.getId())) {
             throw new RuntimeException("This recipe already exists");
@@ -27,7 +31,18 @@ public class RecipeService {
         return recipe;
     }
 
-    public Collection<Recipe> getAllRecipes() {
-        return recipes.values();
+    public Recipe updateRecipe(int id, Recipe recipe) {
+        if (recipes.containsKey(id)) {
+            return recipes.put(id, recipe);
+        } else {
+            throw new RuntimeException("No such recipe");
+        }
+    }
+
+    public Recipe deleteRecipe(int id) {
+        if (recipes.containsKey(id)) {
+            return recipes.remove(id);
+        }
+        throw new RuntimeException("No such recipe");
     }
 }
