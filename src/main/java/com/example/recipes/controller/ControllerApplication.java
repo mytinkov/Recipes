@@ -1,11 +1,13 @@
-package com.example.recipes.controllers;
+package com.example.recipes.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+//@RequestMapping("/info")
 public class ControllerApplication {
+
     @GetMapping
     public String Hello() {
         return "Привет, это приложение с рецептами!";
