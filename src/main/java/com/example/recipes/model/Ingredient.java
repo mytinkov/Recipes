@@ -12,16 +12,8 @@ public class Ingredient {
 
     public Ingredient(String ingredientName, int quantityOfIngredients, String unit) {
         this.ingredientName = ingredientName;
-        setQuantityOfIngredients(quantityOfIngredients);
+        this.quantityOfIngredients = quantityOfIngredients;
         this.unit = unit;
         this.id = counter++;
-    }
-
-    public void setQuantityOfIngredients(int quantityOfIngredients) {
-        if (quantityOfIngredients < 0) {
-            throw new IllegalArgumentException("Don't allow negative argument");
-        } else {
-            this.quantityOfIngredients = quantityOfIngredients;
-        }
     }
 }

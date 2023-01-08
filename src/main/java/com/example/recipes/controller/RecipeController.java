@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,7 +85,10 @@ public class RecipeController {
                     }
             )
     })
-    public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe) {
+        if (StringUtils.isBlank(recipe.getRecipeName())) {
+            return ResponseEntity.badRequest().body("Отсуствует название рецепта");
+        }
         return ResponseEntity.ok(this.recipeService.addRecipe(recipe));
     }
 
@@ -105,7 +109,10 @@ public class RecipeController {
                     }
             )
     })
-    public ResponseEntity<Recipe> updateRecipe(@PathVariable("id") int id, @RequestBody Recipe recipe) {
+    public ResponseEntity<?> updateRecipe(@PathVariable("id") int id, @RequestBody Recipe recipe) {
+        if (StringUtils.isBlank(recipe.getRecipeName())) {
+            return ResponseEntity.badRequest().body("Отсуствует название рецепта");
+        }
         return ResponseEntity.ok(this.recipeService.updateRecipe(id, recipe));
     }
 

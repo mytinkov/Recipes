@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,7 +88,10 @@ public class IngredientController {
                     }
             )
     })
-    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient) {
+    public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient) {
+        if (StringUtils.isBlank(ingredient.getIngredientName())) {
+            return ResponseEntity.badRequest().body("Отсуствует название ингредиента");
+        }
         return ResponseEntity.ok(this.ingredientService.addIngredient(ingredient));
     }
 
@@ -109,9 +113,12 @@ public class IngredientController {
                     }
             )
     })
-    public ResponseEntity<Ingredient> updateIngredient(@PathVariable("id") int id, @RequestBody Ingredient ingredient) {
-            this.ingredientService.updateIngredient(id, ingredient);
-            return ResponseEntity.ok(this.ingredientService.updateIngredient(id, ingredient));
+    public ResponseEntity<?> updateIngredient(@PathVariable("id") int id, @RequestBody Ingredient ingredient) {
+        if (StringUtils.isBlank(ingredient.getIngredientName())) {
+            return ResponseEntity.badRequest().body("Отсуствует название игредиента");
+        }
+        this.ingredientService.updateIngredient(id, ingredient);
+        return ResponseEntity.ok(this.ingredientService.updateIngredient(id, ingredient));
     }
 
     @DeleteMapping("/{id}")

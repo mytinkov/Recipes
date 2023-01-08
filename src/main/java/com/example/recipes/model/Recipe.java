@@ -16,17 +16,9 @@ public class Recipe {
 
     public Recipe(String recipeName, int timeForPreparing, Set<Ingredient> ingredients, List<String>cookingSteps) {
         this.recipeName = recipeName;
-        setTimeForPreparing(timeForPreparing);
+        this.timeForPreparing = timeForPreparing;
         this.ingredients = ingredients;
         this.cookingSteps.add(String.valueOf(cookingSteps));
         this.id = counter++;
-    }
-
-    public void setTimeForPreparing(int timeForPreparing) {
-        if (timeForPreparing < 0) {
-            throw new IllegalArgumentException("Don't allow negative argument");
-        } else {
-            this.timeForPreparing = timeForPreparing;
-        }
     }
 }
