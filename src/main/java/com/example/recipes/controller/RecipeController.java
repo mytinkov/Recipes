@@ -1,8 +1,6 @@
 package com.example.recipes.controller;
 
-import com.example.recipes.model.Ingredient;
 import com.example.recipes.model.Recipe;
-import com.example.recipes.service.IngredientService;
 import com.example.recipes.service.RecipeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
