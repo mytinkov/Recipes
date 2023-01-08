@@ -1,10 +1,8 @@
 package com.example.recipes.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 
-@EqualsAndHashCode
-@ToString
+@Data
 public class Ingredient {
     private String ingredientName;
     private int quantityOfIngredients;
@@ -19,18 +17,6 @@ public class Ingredient {
         this.id = counter++;
     }
 
-    public String getIngredientName() {
-        return ingredientName;
-    }
-
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
-    }
-
-    public int getQuantityOfIngredients() {
-        return quantityOfIngredients;
-    }
-
     public void setQuantityOfIngredients(int quantityOfIngredients) {
         if (quantityOfIngredients < 0) {
             throw new IllegalArgumentException("Don't allow negative argument");
@@ -38,17 +24,4 @@ public class Ingredient {
             this.quantityOfIngredients = quantityOfIngredients;
         }
     }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public int getId() {
-        return id;
-    }
-
 }

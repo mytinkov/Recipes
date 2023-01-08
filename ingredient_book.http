@@ -45,4 +45,4 @@ Content-Type: application/json
 }
 
 ###Удаление ингредиента по id
-DELETE http://localhost:8080/ingredients/1
+DELETE http://localhost:8080/ingredients/2

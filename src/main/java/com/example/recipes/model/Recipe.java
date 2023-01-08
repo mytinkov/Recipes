@@ -1,12 +1,10 @@
 package com.example.recipes.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.*;
 
-@EqualsAndHashCode
-@ToString
+@Data
 public class Recipe {
     private String recipeName;
     private int timeForPreparing;
@@ -24,41 +22,11 @@ public class Recipe {
         this.id = counter++;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getRecipeName() {
-        return recipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
-    public int getTimeForPreparing() {
-        return timeForPreparing;
-    }
-
     public void setTimeForPreparing(int timeForPreparing) {
         if (timeForPreparing < 0) {
             throw new IllegalArgumentException("Don't allow negative argument");
         } else {
             this.timeForPreparing = timeForPreparing;
         }
-    }
-
-    public Set<Ingredient> getIngredient() {
-        return ingredients;
-    }
-
-
-
-    public List<String> getCookingSteps() {
-        return cookingSteps;
-    }
-
-    public void setCookingSteps(List<String> cookingSteps) {
-        this.cookingSteps = cookingSteps;
     }
 }
