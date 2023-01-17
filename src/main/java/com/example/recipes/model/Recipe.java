@@ -5,10 +5,11 @@ import lombok.*;
 import java.util.*;
 
 @Data
+@NoArgsConstructor
 public class Recipe {
     private String recipeName;
     private int timeForPreparing;
-    private final Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
     private List<String> cookingSteps = new LinkedList<>();
     private int id;
     private static int counter;
