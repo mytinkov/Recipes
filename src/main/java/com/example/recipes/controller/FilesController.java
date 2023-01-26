@@ -35,31 +35,51 @@ public class FilesController {
     }
 
     @Operation(
-            summary = "Сохранение ингредиента в файл",
-            description = "Сохранение ингредиента в файл"
+            summary = "Сохранение всех ингредиентов в файл json",
+            description = "Сохранние в формате json"
     )
     @GetMapping(value = "/export/ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InputStreamResource> downloadDataFile() throws FileNotFoundException {
+    public ResponseEntity<InputStreamResource> downloadIngredientDataFile() throws FileNotFoundException {
         File file = fileServiceIngredient.getDataFile();
         if (file.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream((file)));
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"IngredientsData.json\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"ingredient.json\"")
                     .body(resource);
         } else {
             return ResponseEntity.noContent().build();
         }
-
     }
+
+    @Operation(
+            summary = "Сохранение всех рецептов в файл json",
+            description = "Сохранние в формате json"
+    )
+    @GetMapping(value = "/export/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InputStreamResource> downloadRecipeDataFile() throws FileNotFoundException {
+        File file = fileServiceRecipe.getDataFile();
+        if (file.exists()) {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream((file)));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"recipe.json\"")
+                    .body(resource);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
 
     @Operation(
             summary = "Загрузка ингредиента из файла",
             description = "Загрузка ингредиента из файла"
     )
     @PostMapping(value = "/import/ingredient", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadDataFile(@RequestParam MultipartFile file) {
+    public ResponseEntity<Void> uploadIngredientDataFile(@RequestParam MultipartFile file) {
         fileServiceIngredient.cleanDataFile();
         File dataFileIngredient = fileServiceIngredient.getDataFile();
         try (FileOutputStream fos = new FileOutputStream(dataFileIngredient)) {
@@ -76,7 +96,7 @@ public class FilesController {
             description = "Загрузка Рецепта из файла"
     )
     @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadDataFileRecipe(@RequestParam MultipartFile file) {
+    public ResponseEntity<Void> uploadRecipeDataFile(@RequestParam MultipartFile file) {
         fileServiceRecipe.cleanDataFile();
         File dataFileRecipe = fileServiceRecipe.getDataFile();
         try (FileOutputStream fos = new FileOutputStream(dataFileRecipe)) {
