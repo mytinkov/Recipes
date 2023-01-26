@@ -1,21 +1,19 @@
 package com.example.recipes.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Data
 @NoArgsConstructor
 public class Ingredient {
-    private String ingredientName;
-    private int quantityOfIngredients;
+    public String title;
+    private int totalIngredients;
     private String unit;
-    private int id;
-    private static int counter;
 
-    public Ingredient(String ingredientName, int quantityOfIngredients, String unit) {
-        this.ingredientName = ingredientName;
-        this.quantityOfIngredients = quantityOfIngredients;
-        this.unit = unit;
-        this.id = counter++;
+    @Override
+    public String toString() {
+        return title + ": " + totalIngredients + " " + unit;
     }
 }

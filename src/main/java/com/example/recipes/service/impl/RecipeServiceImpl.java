@@ -1,92 +1,118 @@
 package com.example.recipes.service.impl;
 
-import com.example.recipes.model.Ingredient;
+import com.example.recipes.exception.ExceptionWithCheckingRecipes;
+import com.example.recipes.exception.ExceptionWithOperationFile;
 import com.example.recipes.model.Recipe;
-import com.example.recipes.service.FilesService;
 import com.example.recipes.service.RecipeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
+    private FileServiceRecipeImpl fileServiceRecipe;
+    private Map<String, Recipe> recipes = new HashMap<String, Recipe>();
+    private Long counter = 0L;
 
-    //private final FilesService filesService;
-    private static HashMap<Integer, Recipe> recipes = new HashMap<>();
 
-    /*public RecipeServiceImpl(FilesService filesService) {
-        this.filesService = filesService;
-    }*/
+    public RecipeServiceImpl(FileServiceRecipeImpl fileServiceRecipe) {
+        this.fileServiceRecipe = fileServiceRecipe;
+    }
 
-    /*@PostConstruct
-    public void unit() {
-        readFromFile();
-    }*/
-
-    @Override
-    public Recipe getRecipe(int id) {
-        if (recipes.containsKey(id)) {
-            return recipes.get(id);
-        } else {
-            throw new RuntimeException("No such recipe");
+    @PostConstruct
+    private void init() {
+        try {
+            readFromFile();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+
     @Override
-    public Collection<Recipe> getAllRecipes() {
+    public Collection<Recipe> getAllRecipe() {
         return recipes.values();
     }
 
     @Override
-    public Recipe addRecipe(Recipe recipe) {
-        if (recipes.containsKey(recipe.getId())) {
-            throw new RuntimeException("This recipe already exists");
+    public Recipe addNewRecipe(Recipe recipe) throws ExceptionWithCheckingRecipes, ExceptionWithOperationFile {
+        if (recipes.containsKey(counter)) {
+            throw new ExceptionWithCheckingRecipes("Такой рецепт уже есть");
         } else {
-            recipes.put(recipe.getId(), recipe);
+            recipes.put(String.valueOf(this.counter++), recipe);
+            saveToFile();
         }
         return recipe;
     }
 
     @Override
-    public Recipe updateRecipe(int id, Recipe recipe) {
-        if (recipes.containsKey(id)) {
-            return recipes.put(id, recipe);
-        } else {
-            throw new RuntimeException("No such recipe");
+    public Recipe editRecipe(String id, Recipe recipe) throws ExceptionWithCheckingRecipes, ExceptionWithOperationFile {
+        Recipe serviceRecipe = recipes.get(id);
+        if (serviceRecipe == null) {
+            throw new ExceptionWithCheckingRecipes("Нет такого рецепта");
         }
+        serviceRecipe.setName(recipe.getName());
+        serviceRecipe.setIngredients(recipe.getIngredients());
+        serviceRecipe.setTimeCooking(recipe.getTimeCooking());
+        serviceRecipe.setStep(recipe.getStep());
+        saveToFile();
+        return serviceRecipe;
     }
 
     @Override
-    public Recipe deleteRecipe(int id) {
-        if (recipes.containsKey(id)) {
-            return recipes.remove(id);
-        }
-        throw new RuntimeException("No such recipe");
+    public Recipe removeRecipe(String id) {
+        return recipes.remove(id);
     }
 
-    /*private void saveToFile() {
+
+    public void saveToFile() throws ExceptionWithOperationFile {
         try {
-            String json = new ObjectMapper().writeValueAsString(recipes); //подготовка строки через jackson - обработка объекта в json, закинули карту transactions
-            filesService.saveToFile(json);
+            String json = new ObjectMapper().writeValueAsString(recipes);
+            fileServiceRecipe.saveToFile(json);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new ExceptionWithOperationFile("Ошибка сохранения файла");
         }
     }
 
-    private void readFromFile() {
-        String json = filesService.readFromFile();
+
+    public void readFromFile() throws ExceptionWithOperationFile {
         try {
-            recipes = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
+            String json = fileServiceRecipe.readFromFile();
+            recipes = new ObjectMapper().readValue(json, new TypeReference<>() {
+
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }*/
+            e.printStackTrace();
+            throw new ExceptionWithOperationFile("Ошибка чтения из файла");
+        }
 
 
     }
+
+    @Override
+    public Path createRecipeFile() throws IOException {
+        Path path = fileServiceRecipe.createTempFile("recipes");
+        for (Recipe recipe : recipes.values()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+                writer.append(("Название рецепта: " + recipe.getName() + '\n' + '\n' +
+                        "Время приготовления: " + recipe.getTimeCooking() + '\n' + '\n' +
+                        "Ингредиенты: " + recipe.getIngredients() + '\n' + '\n' +
+                        "Инструкция приготовления: " + '\n' + '\n' + recipe.getStep() + '\n'));
+            }
+        }
+        return path;
+    }
+
+}

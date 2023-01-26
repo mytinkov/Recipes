@@ -1,0 +1,44 @@
+{
+  "0": {
+    "name": "ng",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  },
+  "1": {
+    "name": "123",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  },
+  "2": {
+    "name": "234",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  }
+}

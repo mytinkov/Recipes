@@ -1,18 +1,21 @@
 package com.example.recipes.service;
 
+import com.example.recipes.exception.ExceptionWithCheckingIngredients;
+import com.example.recipes.exception.ExceptionWithOperationFile;
 import com.example.recipes.model.Ingredient;
 
 import java.util.Collection;
 
 public interface IngredientService {
+    Collection<Ingredient> getAllIngredient();
 
-    Ingredient addIngredient(Ingredient ingredient);
+    Ingredient addNewIngredient(Ingredient ingredient) throws ExceptionWithCheckingIngredients, ExceptionWithOperationFile;
 
-    Ingredient updateIngredient(int id, Ingredient ingredient);
+    Ingredient updateIngredient(String id, Ingredient ingredient) throws ExceptionWithCheckingIngredients, ExceptionWithOperationFile;
 
-    Ingredient deleteIngredient(int id);
+    Ingredient removeIngredientById(String id);
 
-    Ingredient getIngredient(int id);
+    void saveToFile() throws ExceptionWithOperationFile;
 
-    Collection<Ingredient> getAllIngredients();
+    void readFromFile() throws ExceptionWithOperationFile;
 }

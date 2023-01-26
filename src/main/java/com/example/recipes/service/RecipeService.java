@@ -1,17 +1,25 @@
 package com.example.recipes.service;
 
+import com.example.recipes.exception.ExceptionWithCheckingRecipes;
+import com.example.recipes.exception.ExceptionWithOperationFile;
 import com.example.recipes.model.Recipe;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 
 public interface RecipeService {
-    Recipe getRecipe(int id);
+    void readFromFile() throws ExceptionWithOperationFile;
 
-    Collection<Recipe> getAllRecipes();
+    void saveToFile() throws ExceptionWithOperationFile;
 
-    Recipe addRecipe(Recipe recipe);
+    Collection<Recipe> getAllRecipe();
 
-    Recipe updateRecipe(int id, Recipe recipe);
+    Recipe addNewRecipe(Recipe recipe) throws ExceptionWithCheckingRecipes, ExceptionWithOperationFile;
 
-    Recipe deleteRecipe(int id);
+    Recipe editRecipe(String id, Recipe recipe) throws ExceptionWithCheckingRecipes, ExceptionWithOperationFile;
+
+    Recipe removeRecipe(String id);
+
+    Path createRecipeFile() throws IOException;
 }
