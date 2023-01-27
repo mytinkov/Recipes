@@ -122,15 +122,15 @@ public class FilesController {
             if (Files.size(path) == 0) {
                 return ResponseEntity.noContent().build();
             }
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile())); //Превращаем наш путь в файл
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(Files.size(path))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"RecipesFile.txt\"")
                     .body(resource);
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            e.printStackTrace(); //печатаем в консоль
+            return ResponseEntity.internalServerError().build(); //отправляем ошибку на клиента
         }
     }
 }

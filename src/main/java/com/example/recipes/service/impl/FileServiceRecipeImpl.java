@@ -48,12 +48,6 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     }
 
     @Override
-    public File getDataFile() {
-        return new File(dataFilePath + "/" + dataFileName);
-        //Мы вовзращаем файл не касаясь его внутренего содержания, класс File работает только с метаинформацией файла
-    }
-
-    @Override
     public boolean cleanDataFile() {
 
         try {
@@ -88,10 +82,15 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     }
 
     @Override
-    public Path createTempFile(String suffix) {
+    public File getDataFile() {
+        return new File(dataFilePath + "/" + dataFileName);
+        //Мы возвращаем файл не касаясь его внутренего содержания, класс File работает только с метаинформацией файла
+    }
+
+    @Override
+    public Path createTempFile(String suffix) {  /*Метод создает временные файлы. Возвращаем путь к нашему файлу*/
         try {
-            //Создает новый пустой файл в указанном каталоге, используя заданные строки префикса и суффикса для создания его имени.
-            return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
+            return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix); //префик и суфикс формируют название
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException();

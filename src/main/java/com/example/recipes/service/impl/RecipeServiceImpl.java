@@ -101,9 +101,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Path createRecipeFile() throws IOException {
-        Path path = fileServiceRecipe.createTempFile("recipes"); //Создаем путь до файла  в определенной директории
+        Path path = fileServiceRecipe.createTempFile("recipes"); //Создаем временный файл с новым названием, и передаем путь
         for (Recipe recipe : recipes.values()) {
             try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+                /*Используем Reader т.к. работаем с текстом.
+                * Открываем исходящий поток по указанному пути для записи во временный файл.
+                * Если оставить только path, то при каждой записи файл будет перезаписываться.
+                * Поэтому добавляем опцию добавления в файл StandardOpenOption.APPEND*/
                 writer.append(("Название рецепта: " + recipe.getName() + '\n' + '\n' +
                         "Время приготовления: " + recipe.getTimeCooking() + '\n' + '\n' +
                         "Ингредиенты: " + recipe.getIngredients() + '\n' + '\n' +

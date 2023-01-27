@@ -1,5 +1,5 @@
 {
-  "5": {
+  "8": {
     "name": "string",
     "timeCooking": 0,
     "ingredients": [
@@ -13,7 +13,7 @@
       "string"
     ]
   },
-  "6": {
+  "9": {
     "name": "второй рецепт",
     "timeCooking": 0,
     "ingredients": [
@@ -27,7 +27,7 @@
       "string"
     ]
   },
-  "7": {
+  "10": {
     "name": "третий рецепт",
     "timeCooking": 0,
     "ingredients": [
