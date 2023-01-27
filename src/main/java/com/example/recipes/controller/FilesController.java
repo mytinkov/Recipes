@@ -5,7 +5,7 @@ import com.example.recipes.service.FileServiceRecipe;
 import com.example.recipes.service.RecipeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
 
 public class FilesController {
 
-    private final FileServiceRecipe fileServiceRecipe;
+    private final FileServiceRecipe fileServiceRecipe; //инжектим для работы с методами
     private final FileServiceIngredient fileServiceIngredient;
     private RecipeService recipeService;
 
@@ -40,16 +40,17 @@ public class FilesController {
     )
     @GetMapping(value = "/export/ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> downloadIngredientDataFile() throws FileNotFoundException {
-        File file = fileServiceIngredient.getDataFile();
-        if (file.exists()) {
-            InputStreamResource resource = new InputStreamResource(new FileInputStream((file)));
+        File file = fileServiceIngredient.getDataFile(); //Получаем информацию о файле
+        if (file.exists()) { /*проверяем, существует ли файл*/
+            InputStreamResource resource = new InputStreamResource(new FileInputStream((file))); //Создаем входной поток из файла
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"ingredient.json\"")
-                    .body(resource);
+                    .contentType(MediaType.APPLICATION_JSON) //указываем что конкретно мы передаем. contentType - заголовок запроса URL
+                    //APPLICATION_OCTET_STREAM - говорит, что это поток байт
+                    .contentLength(file.length()) //Чтобы браузер понял, сколько все байт должно было быть получено. contentLength - это заголовок URL
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"ingredient.json\"") // attachment - говорит о том что его надо обязательно скачать, также указываем имя файла при скачивании
+                    .body(resource); //передаем ресурс в тело ответа, чтобы пользователь мог его скачать (читаем поток в браузере)
         } else {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build(); //noContent - 204 статус (все хорошо но нет содержимого)
         }
     }
 
@@ -57,7 +58,7 @@ public class FilesController {
             summary = "Сохранение всех рецептов в файл json",
             description = "Сохранние в формате json"
     )
-    @GetMapping(value = "/export/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/export/recipe", produces = MediaType.APPLICATION_JSON_VALUE) //APPLICATION_JSON.. говорим что всегда будет генерироваться json
     public ResponseEntity<InputStreamResource> downloadRecipeDataFile() throws FileNotFoundException {
         File file = fileServiceRecipe.getDataFile();
         if (file.exists()) {
@@ -66,7 +67,7 @@ public class FilesController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"recipe.json\"")
-                    .body(resource);
+                    .body(resource); //читаем поток
         } else {
             return ResponseEntity.noContent().build();
         }
@@ -95,17 +96,18 @@ public class FilesController {
             summary = "Загрузка Рецепта из файла",
             description = "Загрузка Рецепта из файла"
     )
-    @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadRecipeDataFile(@RequestParam MultipartFile file) {
-        fileServiceRecipe.cleanDataFile();
-        File dataFileRecipe = fileServiceRecipe.getDataFile();
-        try (FileOutputStream fos = new FileOutputStream(dataFileRecipe)) {
-            IOUtils.copy(file.getInputStream(), fos);
-            return ResponseEntity.ok().build();
+    @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // consumes - мы указываем, что принимаем запросы только с типом Multipart...
+    public ResponseEntity<Void> uploadRecipeDataFile(@RequestParam MultipartFile file) { //в @RP получаем файл
+        fileServiceRecipe.cleanDataFile();  //удаляем дата файл и создаем пустой новый
+        File dataFileRecipe = fileServiceRecipe.getDataFile(); //берем про него информацию
+
+        try (FileOutputStream fos = new FileOutputStream(dataFileRecipe)) {   // Открываем исходящий поток. try со стримами сам закрывает поток
+            IOUtils.copy(file.getInputStream(), fos); //Берем входящий поток из запроса (file.getInputStream()), копируем в исходящий.
+            return ResponseEntity.ok().build(); //Если все ок отправляем статус 200
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); //Ошибка 500
     }
 
 
@@ -132,3 +134,19 @@ public class FilesController {
         }
     }
 }
+
+
+    /*Пример написания import без использования библиотеки Apache Commons IO (mvnrepository.com)
+    public ResponseEntity<Void> uploadDataFile(@RequestParam MultipartFile file) {
+    fileService.cleanDataFile();
+    File dataFile = fileService.getDataFile;
+
+    try (BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
+    FileOutputStream fos = new FileOutputStream(dataFile);
+    BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+        byte[] buffer = new byte[1014];
+        while (bis.read(buffer) > 0) {
+        bos.write(buffer);
+        }
+    }
+     */

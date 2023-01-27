@@ -1,6 +1,6 @@
 {
-  "0": {
-    "name": "ng",
+  "5": {
+    "name": "string",
     "timeCooking": 0,
     "ingredients": [
       {
@@ -13,8 +13,8 @@
       "string"
     ]
   },
-  "1": {
-    "name": "123",
+  "6": {
+    "name": "второй рецепт",
     "timeCooking": 0,
     "ingredients": [
       {
@@ -27,8 +27,8 @@
       "string"
     ]
   },
-  "2": {
-    "name": "234",
+  "7": {
+    "name": "третий рецепт",
     "timeCooking": 0,
     "ingredients": [
       {

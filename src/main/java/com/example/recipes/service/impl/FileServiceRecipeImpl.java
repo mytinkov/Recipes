@@ -29,7 +29,7 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     public boolean saveToFile(String json) throws ExceptionWithOperationFile {
         try {
             cleanDataFile();
-            Files.writeString(Path.of(dataFilePath, dataFileName), json);
+            Files.writeString(Path.of(dataFilePath, dataFileName), json); //Записываем строку в json
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     @Override
     public String readFromFile() throws ExceptionWithOperationFile {
         try {
-            return Files.readString(Path.of(dataFilePath, dataFileName));
+            return Files.readString(Path.of(dataFilePath, dataFileName)); //Считывает все содержимое файла в строку, декодируя байты в символы
         } catch (IOException e) {
             e.printStackTrace();
             throw new ExceptionWithOperationFile("Ошибка чтения из файла");
@@ -50,6 +50,7 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     @Override
     public File getDataFile() {
         return new File(dataFilePath + "/" + dataFileName);
+        //Мы вовзращаем файл не касаясь его внутренего содержания, класс File работает только с метаинформацией файла
     }
 
     @Override
@@ -57,8 +58,8 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
 
         try {
             Path path = Path.of(dataFilePath, dataFileName);
-            Files.deleteIfExists(path);
-            Files.createFile(path);
+            Files.deleteIfExists(path); //Удаляем если есть такой файл/если его нет, ничего не делает
+            Files.createFile(path); //создает чистый файл
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,6 +90,7 @@ public class FileServiceRecipeImpl implements FileServiceRecipe {
     @Override
     public Path createTempFile(String suffix) {
         try {
+            //Создает новый пустой файл в указанном каталоге, используя заданные строки префикса и суффикса для создания его имени.
             return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
         } catch (IOException e) {
             e.printStackTrace();

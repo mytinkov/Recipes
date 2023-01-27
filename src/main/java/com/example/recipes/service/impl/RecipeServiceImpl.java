@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
-    private FileServiceRecipeImpl fileServiceRecipe;
+    private FileServiceRecipeImpl fileServiceRecipe; //инжектим для доступа к методам, добавляем в конструктор
     private Map<String, Recipe> recipes = new HashMap<String, Recipe>();
     private Long counter = 0L;
 
@@ -30,7 +30,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.fileServiceRecipe = fileServiceRecipe;
     }
 
-    @PostConstruct
+    @PostConstruct //При запуске программы автоматически читаем файл из которого создается объект
     private void init() {
         try {
             readFromFile();
@@ -50,8 +50,8 @@ public class RecipeServiceImpl implements RecipeService {
         if (recipes.containsKey(counter)) {
             throw new ExceptionWithCheckingRecipes("Такой рецепт уже есть");
         } else {
-            recipes.put(String.valueOf(this.counter++), recipe);
-            saveToFile();
+            recipes.put(String.valueOf(this.counter++), recipe); //Делаем увеличение счетчка(ключа в карте) при добавлении нового рецепта + добавлем его в виде строки
+            saveToFile(); //Делаем сохранение в файл после добавления рецепта
         }
         return recipe;
     }
@@ -78,8 +78,8 @@ public class RecipeServiceImpl implements RecipeService {
 
     public void saveToFile() throws ExceptionWithOperationFile {
         try {
-            String json = new ObjectMapper().writeValueAsString(recipes);
-            fileServiceRecipe.saveToFile(json);
+            String json = new ObjectMapper().writeValueAsString(recipes); //Создаем строку из объекта
+            fileServiceRecipe.saveToFile(json); //Передаем строку в метод сохранения сервиса работы с файлами
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new ExceptionWithOperationFile("Ошибка сохранения файла");
@@ -89,10 +89,8 @@ public class RecipeServiceImpl implements RecipeService {
 
     public void readFromFile() throws ExceptionWithOperationFile {
         try {
-            String json = fileServiceRecipe.readFromFile();
-            recipes = new ObjectMapper().readValue(json, new TypeReference<>() {
-
-            });
+            String json = fileServiceRecipe.readFromFile(); //создаем строку из прочитанного файла (в сервисе по работе с файлами)
+            recipes = new ObjectMapper().readValue(json, new TypeReference<>() {}); //Пытаемся собрать объект определенного типа из прочитанной строки
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new ExceptionWithOperationFile("Ошибка чтения из файла");
@@ -103,7 +101,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Path createRecipeFile() throws IOException {
-        Path path = fileServiceRecipe.createTempFile("recipes");
+        Path path = fileServiceRecipe.createTempFile("recipes"); //Создаем путь до файла  в определенной директории
         for (Recipe recipe : recipes.values()) {
             try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
                 writer.append(("Название рецепта: " + recipe.getName() + '\n' + '\n' +
