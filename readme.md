@@ -1,8 +1,5 @@
-# Описание проекта
-* Название проекта: Рецепты;
-
-* Функции проекта: Предлагать рецепты по запросу;
-
-* Технологии: Spring, Maven;
-
-* Язык: Java;
+# Project Description
+* Project Name: Recipes
+* Project Functions: Providing recipes upon request
+* Technologies Used: Spring, Maven
+* Programming Language: Java
