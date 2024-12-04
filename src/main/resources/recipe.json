@@ -1,0 +1,44 @@
+{
+  "8": {
+    "name": "string",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  },
+  "9": {
+    "name": "второй рецепт",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  },
+  "10": {
+    "name": "третий рецепт",
+    "timeCooking": 0,
+    "ingredients": [
+      {
+        "title": "string",
+        "totalIngredients": 0,
+        "unit": "string"
+      }
+    ],
+    "step": [
+      "string"
+    ]
+  }
+}
